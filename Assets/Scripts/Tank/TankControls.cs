@@ -131,15 +131,6 @@ namespace Tanks
             ""id"": ""5bfbcf4b-c8dd-4f77-b4d3-1f2c056f2fb8"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""16efcff7-f292-4cac-864a-40be3bc6f432"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""a7757e24-0f57-49f9-bcda-68ea4f0484f4"",
@@ -159,17 +150,6 @@ namespace Tanks
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""83e23241-0e97-42c3-a495-16fc3436c7d3"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""f3be0509-0be8-4564-b84b-1c2e179bda05"",
@@ -204,7 +184,6 @@ namespace Tanks
             m_Tank_Movement = m_Tank.FindAction("Movement", throwIfNotFound: true);
             // Turret
             m_Turret = asset.FindActionMap("Turret", throwIfNotFound: true);
-            m_Turret_Newaction = m_Turret.FindAction("New action", throwIfNotFound: true);
             m_Turret_Fire = m_Turret.FindAction("Fire", throwIfNotFound: true);
             m_Turret_Focus = m_Turret.FindAction("Focus", throwIfNotFound: true);
         }
@@ -336,14 +315,12 @@ namespace Tanks
         // Turret
         private readonly InputActionMap m_Turret;
         private List<ITurretActions> m_TurretActionsCallbackInterfaces = new List<ITurretActions>();
-        private readonly InputAction m_Turret_Newaction;
         private readonly InputAction m_Turret_Fire;
         private readonly InputAction m_Turret_Focus;
         public struct TurretActions
         {
             private @TankControls m_Wrapper;
             public TurretActions(@TankControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Newaction => m_Wrapper.m_Turret_Newaction;
             public InputAction @Fire => m_Wrapper.m_Turret_Fire;
             public InputAction @Focus => m_Wrapper.m_Turret_Focus;
             public InputActionMap Get() { return m_Wrapper.m_Turret; }
@@ -355,9 +332,6 @@ namespace Tanks
             {
                 if (instance == null || m_Wrapper.m_TurretActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_TurretActionsCallbackInterfaces.Add(instance);
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
@@ -368,9 +342,6 @@ namespace Tanks
 
             private void UnregisterCallbacks(ITurretActions instance)
             {
-                @Newaction.started -= instance.OnNewaction;
-                @Newaction.performed -= instance.OnNewaction;
-                @Newaction.canceled -= instance.OnNewaction;
                 @Fire.started -= instance.OnFire;
                 @Fire.performed -= instance.OnFire;
                 @Fire.canceled -= instance.OnFire;
@@ -402,7 +373,6 @@ namespace Tanks
         }
         public interface ITurretActions
         {
-            void OnNewaction(InputAction.CallbackContext context);
             void OnFire(InputAction.CallbackContext context);
             void OnFocus(InputAction.CallbackContext context);
         }

@@ -107,15 +107,6 @@
             "id": "5bfbcf4b-c8dd-4f77-b4d3-1f2c056f2fb8",
             "actions": [
                 {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "16efcff7-f292-4cac-864a-40be3bc6f432",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Fire",
                     "type": "Button",
                     "id": "a7757e24-0f57-49f9-bcda-68ea4f0484f4",
@@ -135,17 +126,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "83e23241-0e97-42c3-a495-16fc3436c7d3",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "f3be0509-0be8-4564-b84b-1c2e179bda05",
