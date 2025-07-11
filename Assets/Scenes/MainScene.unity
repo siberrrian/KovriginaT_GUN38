@@ -4662,6 +4662,18 @@ PrefabInstance:
       propertyPath: m_margin.z
       value: -0.13072203
       objectReference: {fileID: 0}
+    - target: {fileID: 6978385074037127819, guid: 408c25a181323e64da4aebe32ec3ca29, type: 3}
+      propertyPath: m_colorMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6978385074037127819, guid: 408c25a181323e64da4aebe32ec3ca29, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6978385074037127819, guid: 408c25a181323e64da4aebe32ec3ca29, type: 3}
+      propertyPath: m_enableVertexGradient
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7643673283115168548, guid: 408c25a181323e64da4aebe32ec3ca29, type: 3}
       propertyPath: m_SizeDelta.x
       value: 214.039
