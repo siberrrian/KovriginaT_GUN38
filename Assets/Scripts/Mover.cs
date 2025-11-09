@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-	[SerializeField]
+    [SerializeField]
+    private Vector3 _start = new Vector3( 10f, 0f, -23.98f );
+    [SerializeField]
+    private Vector3 _end = new Vector3( -10f, 0f, -23.98f );
+
+    [SerializeField]
 	private float _moveTime = 1f;
 	[SerializeField]
 	private float _delayTime = 2f;
-	[SerializeField]
-	private Vector3[] _positions;
+    private Vector3[] _positions;
 
 	private IEnumerator Start()
     {
+		_positions = new Vector3[] {_start, _end};
 		if(_positions.Length < 2) yield break;
 		int prev = 0, curr = 1;
 		var time = 0f;
@@ -31,4 +36,11 @@ public class Mover : MonoBehaviour
 			yield return null;
 		}
 	}
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(_start, 0.5f);
+        Gizmos.DrawWireSphere(_end, 0.5f);
+        Gizmos.DrawLine(_start, _end);
+    }
 }

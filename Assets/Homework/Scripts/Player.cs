@@ -40,8 +40,11 @@ namespace Netologia.Homework
 
 		private void Spawn()
 		{
-			_ball = Instantiate(_ballPrefab, transform);
-			_ball.isKinematic = true;
+			_ball = Instantiate(_ballPrefab, transform.parent);
+			_ball.transform.parent = transform;
+            _ball.transform.position = transform.position;
+			_ball.transform.position += new Vector3(0.0f, 0.5f, 1.0f);
+            _ball.isKinematic = true;
 			_ready = true;
 		}
 
