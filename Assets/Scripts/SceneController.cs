@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class SceneController : MonoBehaviour
@@ -16,11 +16,14 @@ public class SceneController : MonoBehaviour
         
     }
 
-    public void OpenMainScene() {
-
+    public void OpenMainScene() 
+    {
+        throw new NotImplementedException();
+        SceneManager.LoadScene(0);
     }
 
-    public void OpenGameScene() {
-        
+    public void OpenGameScene() 
+    {
+        SceneManager.LoadScene(0);
     }
 }
