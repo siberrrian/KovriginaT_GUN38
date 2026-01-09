@@ -26,10 +26,10 @@ public class CellManager : MonoBehaviour
                 if (i == j) continue;
                 var source = positions[i];
                 var destination = positions[j];
-
+                /*
                 var forward = destination.z.CompareTo(source.z);
                 var right = destination.x.CompareTo(source.x);
-                /*var type = (forward, right) switch
+                var  type = (forward, right) switch
                 {
                     (1, 1) => NeighbourType.ForwardRight,
                     (1, 0) => NeighbourType.Forward,
