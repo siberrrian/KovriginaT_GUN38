@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,9 +11,20 @@ public class Cell : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     private MeshRenderer _select;
     
     public Unit Unit { get; set; }
-        
-    public event Action<Cell> OnPointerClickEvent;
+    private bool IsEmpty => Unit == null;
 
+    public Vector3 Center => _select.transform.position;
+
+    public Dictionary<NeighbourType, Cell> Neighbours { get; set; } = new Dictionary<NeighbourType, Cell>(0);
+
+    public event Action<Cell> OnClicked;
+    //public event Action<Cell> OnPointerClickEvent;
+    /*
+    private void Awake()
+    {
+        var nei = FindAnyObjectByType<Cell>();
+
+    }*/
 
     public void SetSelect(Material material)
     {
@@ -27,7 +39,7 @@ public class Cell : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     public void OnPointerClick(PointerEventData eventData) 
     {
-        OnPointerClickEvent.Invoke(this);
+        OnClicked.Invoke(this);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

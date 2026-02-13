@@ -5,11 +5,12 @@ using UnityEngine;
 using Zenject;
 using Unity.VisualScripting;
 using TMPro;
+using Palmmedia.ReportGenerator.Core;
 
 public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     private Transform _camera;
-   // private UnitStats _stats;
+    private UnitStats _stats;
 
     [SerializeField]
     private TextMeshPro _health;
@@ -17,8 +18,8 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     [SerializeField]
     public float MoveSpeed { get; private set; }
 
-    //[field: SerializeField, Space(15f)]
-    //public UnitGameSettings Settings { get; private set; }
+    [field: SerializeField, Space(15f)]
+    public UnitGameSettings Settings { get; private set; }
     [field: SerializeField]
     public Team Team { get; private set; }
     [field: SerializeField]
@@ -29,17 +30,18 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     public int Health
     {
-        //get => _stats.Health;
+        get => _stats.Health;
         set {
-            //_stats.Health = value;
-            //_health.text = value.ToString();
+            _stats.Health = value;
+            _health.text = value.ToString();
         }
     }
 
     private void Awake()
     {
-        //_stats = Settings.Stats;
-        //_health.text = Settings.Stats.Health.ToString();
+        _stats = Settings.Stats;
+        _health.text = Settings.Stats.Health.ToString();
+        _health.text = Settings.Stats.Health.ToString();
     }
 
     [Inject]
@@ -47,13 +49,13 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     {
         _camera = camera.transform;
         _health.enabled = false;
-        //_health.text = Health.ToString();
+        _health.text = Health.ToString();
     }
 
     public void ShowHealth()
     {
         _health.transform.rotation = Quaternion.LookRotation(_health.transform.position - _camera.position);
-        //_health.text = Health.ToString();
+        _health.text = Health.ToString();
         _health.enabled = true;
     }
     public void HideHealth()

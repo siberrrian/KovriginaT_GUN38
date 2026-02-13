@@ -2,11 +2,11 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Game",
+            "name": "MainActions",
             "id": "54744b20-96c4-447b-a253-b50136af0f24",
             "actions": [
                 {
-                    "name": "Game",
+                    "name": "MainActions",
                     "type": "Button",
                     "id": "85df9ab4-d2b6-454d-b31a-18170832285a",
                     "expectedControlType": "Button",
@@ -32,7 +32,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Game",
+                    "action": "MainActions",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

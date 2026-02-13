@@ -23,7 +23,7 @@ public enum Team : byte
 public enum UnitPower
 {
     None = 0,
-    Queen = 1 << 0
+    Queen = 1
 }
 
 public enum GameStatus
@@ -31,13 +31,14 @@ public enum GameStatus
     Error = 0,
 #region Глобальные состояния: [0 - 9]
     Lock = 1,
-    Unlock = 2,
+    //Unlock = 2,
 #endregion
 #region Управление игрока: [10+]
     Select = 3,
     Move = 4,
     Attack = 5,
-    Confirm = 6
+    ConfirmMove = 6,
+    ConfirmAttack = 7
 #endregion
     
 }
@@ -45,8 +46,10 @@ public enum GameStatus
 public enum GameEvent
 {
     Empty = 0,
-    Select = 1,
-    Cancel = 2,
-    Confirm = 3
+    SelectDestination = 1,
+    SwitchMode = 2,
+    SelectTarget = 3,
+    VisualizationPeriod = 4,
+    NewTurn = 5
 }
 

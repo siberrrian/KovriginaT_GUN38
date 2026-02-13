@@ -24,11 +24,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     ""name"": ""Controls"",
     ""maps"": [
         {
-            ""name"": ""Game"",
+            ""name"": ""MainActions"",
             ""id"": ""54744b20-96c4-447b-a253-b50136af0f24"",
             ""actions"": [
                 {
-                    ""name"": ""Game"",
+                    ""name"": ""MainActions"",
                     ""type"": ""Button"",
                     ""id"": ""85df9ab4-d2b6-454d-b31a-18170832285a"",
                     ""expectedControlType"": ""Button"",
@@ -54,7 +54,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Game"",
+                    ""action"": ""MainActions"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -74,10 +74,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Game
-        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_Game = m_Game.FindAction("Game", throwIfNotFound: true);
-        m_Game_Restart = m_Game.FindAction("Restart", throwIfNotFound: true);
+        // MainActions
+        m_MainActions = asset.FindActionMap("MainActions", throwIfNotFound: true);
+        m_MainActions_MainActions = m_MainActions.FindAction("MainActions", throwIfNotFound: true);
+        m_MainActions_Restart = m_MainActions.FindAction("Restart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -136,62 +136,62 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Game
-    private readonly InputActionMap m_Game;
-    private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
-    private readonly InputAction m_Game_Game;
-    private readonly InputAction m_Game_Restart;
-    public struct GameActions
+    // MainActions
+    private readonly InputActionMap m_MainActions;
+    private List<IMainActionsActions> m_MainActionsActionsCallbackInterfaces = new List<IMainActionsActions>();
+    private readonly InputAction m_MainActions_MainActions;
+    private readonly InputAction m_MainActions_Restart;
+    public struct MainActionsActions
     {
         private @Controls m_Wrapper;
-        public GameActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Game => m_Wrapper.m_Game_Game;
-        public InputAction @Restart => m_Wrapper.m_Game_Restart;
-        public InputActionMap Get() { return m_Wrapper.m_Game; }
+        public MainActionsActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MainActions => m_Wrapper.m_MainActions_MainActions;
+        public InputAction @Restart => m_Wrapper.m_MainActions_Restart;
+        public InputActionMap Get() { return m_Wrapper.m_MainActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
-        public void AddCallbacks(IGameActions instance)
+        public static implicit operator InputActionMap(MainActionsActions set) { return set.Get(); }
+        public void AddCallbacks(IMainActionsActions instance)
         {
-            if (instance == null || m_Wrapper.m_GameActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GameActionsCallbackInterfaces.Add(instance);
-            @Game.started += instance.OnGame;
-            @Game.performed += instance.OnGame;
-            @Game.canceled += instance.OnGame;
+            if (instance == null || m_Wrapper.m_MainActionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainActionsActionsCallbackInterfaces.Add(instance);
+            @MainActions.started += instance.OnMainActions;
+            @MainActions.performed += instance.OnMainActions;
+            @MainActions.canceled += instance.OnMainActions;
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
         }
 
-        private void UnregisterCallbacks(IGameActions instance)
+        private void UnregisterCallbacks(IMainActionsActions instance)
         {
-            @Game.started -= instance.OnGame;
-            @Game.performed -= instance.OnGame;
-            @Game.canceled -= instance.OnGame;
+            @MainActions.started -= instance.OnMainActions;
+            @MainActions.performed -= instance.OnMainActions;
+            @MainActions.canceled -= instance.OnMainActions;
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
         }
 
-        public void RemoveCallbacks(IGameActions instance)
+        public void RemoveCallbacks(IMainActionsActions instance)
         {
-            if (m_Wrapper.m_GameActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_MainActionsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IGameActions instance)
+        public void SetCallbacks(IMainActionsActions instance)
         {
-            foreach (var item in m_Wrapper.m_GameActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_MainActionsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_GameActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_MainActionsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public GameActions @Game => new GameActions(this);
-    public interface IGameActions
+    public MainActionsActions @MainActions => new MainActionsActions(this);
+    public interface IMainActionsActions
     {
-        void OnGame(InputAction.CallbackContext context);
+        void OnMainActions(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
     }
 }
