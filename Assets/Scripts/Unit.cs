@@ -14,6 +14,7 @@ public class Unit : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     [SerializeField]
     private TextMeshPro _health;
+    public GameObject Visual;
 
     [SerializeField]
     public float MoveSpeed { get; private set; }

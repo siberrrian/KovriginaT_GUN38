@@ -8,7 +8,7 @@ using Zenject;
 public class InputManager : MonoBehaviour
 {
     private SceneController _sceneController;
-    private Controls.GameActions _controls;
+    private Controls.GameActionsActions _controls;
 
     private Coroutine _restartCoroutine;
 
@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
 
     [Inject]
 
-    private void Construct(SceneController sceneController, Controls.GameActions controls)
+    private void Construct(SceneController sceneController, Controls.GameActionsActions controls)
     {
         _sceneController = sceneController;
         _controls = controls;

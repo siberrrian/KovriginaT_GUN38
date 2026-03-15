@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
             case GameStatus.ConfirmMove:
                 if (destination.Visual != null)
                 {
-                    destination.Visual.StartAnimation(AnimationTriggerType.Move);
+                    //destination.Visual.StartAnimation(AnimationTriggerType.Move);
                     StartCoroutine(OnMove(destination, _data.Target));
                     yield break;
                 }
@@ -55,11 +55,11 @@ public class PlayerController : MonoBehaviour
             case GameStatus.ConfirmAttack:
                 if (destination.Visual != null)
                 {
-                    destination.Visual.StartAnimation(AnimationTriggerType.Attack);
+                    //destination.Visual.StartAnimation(AnimationTriggerType.Attack);
                     StartCoroutine(WaitingAttack(destination, _data.Target.Unit));
                     yield break;
                 }
-                SetDamage(destination, _data.Target.Unit);
+               // SetDamage(destination, _data.Target.Unit);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
             _data.Target.Unit = null;
             Destroy(target.gameObject);
         }
+        yield return new WaitForSeconds(0.01f);
         OnEndPlay();
     }
 
@@ -97,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     private void NewBind(Cell cell, Unit unit)
     {
-        if (!cell.IsEmpty)
+        if (cell != null) //if (!cell.IsEmpty)
         {
             Debug.LogError("Rebind busy cell", cell);
         }

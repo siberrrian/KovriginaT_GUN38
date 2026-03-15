@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using Zenject;
 
 public class SingleSharedData : ISharedData
 {
@@ -34,5 +36,31 @@ public class SingleSharedData : ISharedData
                 : $"<b>[{nameof(GameEvent)}]</b>: new status:{value}</b>");
             _status = value;
         }
+    }
+
+    Unit ISharedData.Destination { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    Cell ISharedData.Target { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+    ICollection<Cell> ISharedData.Accessibles => throw new System.NotImplementedException();
+
+    bool ISharedData.CanSwitch { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+    void ISharedData.Reset()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void ISharedData.Unselect()
+    {
+        throw new System.NotImplementedException();
+    }
+    void ISharedData.NextTurn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void ISharedData.ForceAttackMode()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -9,7 +9,8 @@ public class Cell : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     private MeshRenderer _focus;
     [SerializeField]
     private MeshRenderer _select;
-    
+    public event Action<Cell> OnPointerClickEvent;
+
     public Unit Unit { get; set; }
     private bool IsEmpty => Unit == null;
 

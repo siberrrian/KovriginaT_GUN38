@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 using Zenject;
 using Unity.VisualScripting;
 
 public class BattleController : MonoBehaviour
 {
     private ISharedData _data;
-    private Controls.MainActions _controls;
+    private Controls.MainActionsActions _controls;
 
     private void OnCancel(InputAction.CallbackContext obj)
     {
@@ -62,7 +63,7 @@ public class BattleController : MonoBehaviour
 
     [Inject]
 
-    private void Construct(ISharedData data, Controls.MainActions controls)
+    private void Construct(ISharedData data, Controls.MainActionsActions controls)
     {
         (_data, _controls) = (data, controls);
         _controls.Cansel.performed += OnCancel;

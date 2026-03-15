@@ -1,23 +1,23 @@
 {
-    "name": "Controls",
+    "name": "EditorControls",
     "maps": [
         {
-            "name": "MainActions",
-            "id": "54744b20-96c4-447b-a253-b50136af0f24",
+            "name": "EditorControls",
+            "id": "34254402-9634-4197-a974-bcf952763590",
             "actions": [
                 {
-                    "name": "Cansel",
+                    "name": "NextTurn",
                     "type": "Button",
-                    "id": "85df9ab4-d2b6-454d-b31a-18170832285a",
+                    "id": "6fd43201-5695-447b-ad48-7ccf92413d9b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Restart",
+                    "name": "Kill",
                     "type": "Button",
-                    "id": "d36fe767-4c0a-4c69-ad5b-d558709859fa",
+                    "id": "de31a542-ad40-4e95-8743-0e853ac0eaf8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -27,51 +27,45 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "88d05b92-0043-465e-b320-b60ff051b1be",
-                    "path": "<Keyboard>/space",
+                    "id": "efa34ae1-549a-4466-b791-7e97dee8476a",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cansel",
+                    "action": "NextTurn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "e10b136f-5fb7-493f-a29a-b7441303e33a",
-                    "path": "<Keyboard>/tab",
+                    "id": "8300eab2-a04c-41f7-bd71-7afb02bfe9f9",
+                    "path": "<Keyboard>/numpad1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Restart",
+                    "action": "NextTurn",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "GameActions",
-            "id": "b6ab8abd-5e63-4522-aefa-b2a60ecb237e",
-            "actions": [
-                {
-                    "name": "Restart",
-                    "type": "Button",
-                    "id": "1ab9a71a-704a-43c1-bd00-5540209f83e9",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "6658e62d-f2e9-4610-b204-d797f4a71843",
-                    "path": "<Keyboard>/tab",
+                    "id": "4e04fc31-82ca-4c13-bbc6-d58a491b47f1",
+                    "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Restart",
+                    "action": "Kill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3c6583f-5e8f-484b-b729-1c379e8e4966",
+                    "path": "<Keyboard>/numpad2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Kill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

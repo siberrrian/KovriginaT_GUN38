@@ -28,7 +28,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""id"": ""54744b20-96c4-447b-a253-b50136af0f24"",
             ""actions"": [
                 {
-                    ""name"": ""MainActions"",
+                    ""name"": ""Cansel"",
                     ""type"": ""Button"",
                     ""id"": ""85df9ab4-d2b6-454d-b31a-18170832285a"",
                     ""expectedControlType"": ""Button"",
@@ -50,11 +50,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""88d05b92-0043-465e-b320-b60ff051b1be"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MainActions"",
+                    ""action"": ""Cansel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -70,14 +70,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GameActions"",
+            ""id"": ""b6ab8abd-5e63-4522-aefa-b2a60ecb237e"",
+            ""actions"": [
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""1ab9a71a-704a-43c1-bd00-5540209f83e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6658e62d-f2e9-4610-b204-d797f4a71843"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // MainActions
         m_MainActions = asset.FindActionMap("MainActions", throwIfNotFound: true);
-        m_MainActions_MainActions = m_MainActions.FindAction("MainActions", throwIfNotFound: true);
+        m_MainActions_Cansel = m_MainActions.FindAction("Cansel", throwIfNotFound: true);
         m_MainActions_Restart = m_MainActions.FindAction("Restart", throwIfNotFound: true);
+        // GameActions
+        m_GameActions = asset.FindActionMap("GameActions", throwIfNotFound: true);
+        m_GameActions_Restart = m_GameActions.FindAction("Restart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -139,13 +170,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // MainActions
     private readonly InputActionMap m_MainActions;
     private List<IMainActionsActions> m_MainActionsActionsCallbackInterfaces = new List<IMainActionsActions>();
-    private readonly InputAction m_MainActions_MainActions;
+    private readonly InputAction m_MainActions_Cansel;
     private readonly InputAction m_MainActions_Restart;
     public struct MainActionsActions
     {
         private @Controls m_Wrapper;
         public MainActionsActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MainActions => m_Wrapper.m_MainActions_MainActions;
+        public InputAction @Cansel => m_Wrapper.m_MainActions_Cansel;
         public InputAction @Restart => m_Wrapper.m_MainActions_Restart;
         public InputActionMap Get() { return m_Wrapper.m_MainActions; }
         public void Enable() { Get().Enable(); }
@@ -156,9 +187,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MainActionsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MainActionsActionsCallbackInterfaces.Add(instance);
-            @MainActions.started += instance.OnMainActions;
-            @MainActions.performed += instance.OnMainActions;
-            @MainActions.canceled += instance.OnMainActions;
+            @Cansel.started += instance.OnCansel;
+            @Cansel.performed += instance.OnCansel;
+            @Cansel.canceled += instance.OnCansel;
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
@@ -166,9 +197,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMainActionsActions instance)
         {
-            @MainActions.started -= instance.OnMainActions;
-            @MainActions.performed -= instance.OnMainActions;
-            @MainActions.canceled -= instance.OnMainActions;
+            @Cansel.started -= instance.OnCansel;
+            @Cansel.performed -= instance.OnCansel;
+            @Cansel.canceled -= instance.OnCansel;
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
@@ -189,9 +220,59 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public MainActionsActions @MainActions => new MainActionsActions(this);
+
+    // GameActions
+    private readonly InputActionMap m_GameActions;
+    private List<IGameActionsActions> m_GameActionsActionsCallbackInterfaces = new List<IGameActionsActions>();
+    private readonly InputAction m_GameActions_Restart;
+    public struct GameActionsActions
+    {
+        private @Controls m_Wrapper;
+        public GameActionsActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Restart => m_Wrapper.m_GameActions_Restart;
+        public InputActionMap Get() { return m_Wrapper.m_GameActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameActionsActions set) { return set.Get(); }
+        public void AddCallbacks(IGameActionsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameActionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameActionsActionsCallbackInterfaces.Add(instance);
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
+        }
+
+        private void UnregisterCallbacks(IGameActionsActions instance)
+        {
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
+        }
+
+        public void RemoveCallbacks(IGameActionsActions instance)
+        {
+            if (m_Wrapper.m_GameActionsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameActionsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameActionsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameActionsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameActionsActions @GameActions => new GameActionsActions(this);
     public interface IMainActionsActions
     {
-        void OnMainActions(InputAction.CallbackContext context);
+        void OnCansel(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
+    }
+    public interface IGameActionsActions
+    {
         void OnRestart(InputAction.CallbackContext context);
     }
 }

@@ -14,4 +14,8 @@ public interface ISharedData
     bool CanSwitch { get; set; }
 
     void Reset();
+
+    void Unselect();
+    void NextTurn();
+    void ForceAttackMode();
 }

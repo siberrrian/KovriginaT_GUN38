@@ -18,8 +18,8 @@ public class GameInstaller : MonoInstaller
     public override void InstallBindings()
     {
         _controls = new Controls();
-        _controls.Game.Enable();
-        Container.BindInstance(_controls.Game).AsSingle();
+        _controls.Enable();
+        Container.BindInstance(_controls).AsSingle(); //“ут и выше было _controls.Game но оно не работало
 
         Container.BindInstance(_cellManager).AsSingle();
         Container.BindInstance(_controller).AsSingle();
