@@ -17,11 +17,13 @@ public class ChangeColorCurve : MonoBehaviour
     }
     private void Update()
     {
-        float distance = Vector3.Distance(transform.position, _target.position);
+        float distance = Vector3.Distance(transform.position, _target.position); // дистанция до цели
         if (distance < _minDistance) 
         {
             float redColor = _animCurve.Evaluate(1 - distance / _minDistance);
             _renderer.material.color = new Color(redColor, 0, 0);
+
+            //если дистанция меньше минимальной то применить цвет
         }
     }
 }
