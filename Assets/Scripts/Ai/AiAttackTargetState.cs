@@ -8,20 +8,13 @@ public class AiAttackTargetState : AiState
         return AiStateId.AttackTarget;
     }
 
-    public void Enter(AiAgent agent) {
-        agent.weapons.ActivateWeapon();
-        
-
-        agent.navMeshAgent.stoppingDistance = agent.config.attackStoppingDistance;
-        agent.navMeshAgent.speed = agent.config.attackSpeed;
-    }
-
     public void Update(AiAgent agent) {
         if (!agent.targeting.HasTarget) {
             agent.stateMachine.ChangeState(AiStateId.FindTarget);
             return;
         }
 
+        agent.swords.SetTarget(agent.targeting.Target.transform);
         agent.weapons.SetTarget(agent.targeting.Target.transform);
         agent.navMeshAgent.destination = agent.targeting.TargetPosition;
         
@@ -31,13 +24,56 @@ public class AiAttackTargetState : AiState
         UpdateLowHealth(agent);
         UpdateLowAmmo(agent);
     }
-
-    private void UpdateFiring(AiAgent agent) {
-        if (agent.targeting.TargetInSight) {
-            agent.weapons.SetFiring(true);
-        } else {
+    private void UpdateFiring(AiAgent agent)
+    {
+        // Проверяем, что цель в поле зрения
+        if (!agent.targeting.TargetInSight)
+        {
             agent.weapons.SetFiring(false);
+            return;
         }
+
+        var sword = agent.weapons.currentSword;
+        var weapon = agent.weapons.currentWeapon;
+
+        if (sword)
+        {
+            agent.swords.SetFiring(true);
+            agent.GetComponent<Animator>().SetTrigger("equip");
+            /*
+            float distance = agent.targeting.TargetDistance;
+            if (distance <= 2.5f)
+            { // Дистанция удара
+                sword.StartFiring();
+                // Запускаем анимацию махания (убедись, что триггер такой есть)
+                agent.GetComponent<Animator>().SetTrigger("equip");
+            }*/
+        }
+        else if (weapon)
+        {
+            agent.weapons.SetFiring(true);
+        }
+    }
+
+    public void Enter(AiAgent agent)
+    {
+        agent.weapons.ActivateWeapon();
+        agent.swords.ActivateWeapon();
+
+        if (agent.weapons.currentSword != null)
+        {
+            agent.navMeshAgent.stoppingDistance = 1.5f;
+        }
+        else if (agent.swords.currentSword != null)
+        {
+            agent.navMeshAgent.stoppingDistance = 0.5f;
+        }
+        else
+        {
+            agent.navMeshAgent.stoppingDistance = agent.config.attackStoppingDistance;
+        }
+
+        agent.navMeshAgent.speed = agent.config.attackSpeed;
     }
 
     public void Exit(AiAgent agent) {
@@ -55,6 +91,10 @@ public class AiAttackTargetState : AiState
     void SelectWeapon(AiAgent agent) {
         var bestWeapon = ChooseWeapon(agent);
         if (bestWeapon != agent.weapons.currentWeaponSlot) {
+            agent.weapons.SwitchWeapon(bestWeapon);
+        }
+        if (bestWeapon != agent.swords.currentWeaponSlot)
+        {
             agent.weapons.SwitchWeapon(bestWeapon);
         }
     }

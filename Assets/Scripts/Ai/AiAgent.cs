@@ -15,6 +15,7 @@ public class AiAgent : MonoBehaviour
     [HideInInspector] public UIHealthBar ui;
     [HideInInspector] public Transform playerTransform;
     [HideInInspector] public AiWeapons weapons;
+    [HideInInspector] public AiWeapons swords;
     [HideInInspector] public AiSensor sensor;
     [HideInInspector] public AiTargetingSystem targeting;
     [HideInInspector] public AiHealth health;
@@ -27,6 +28,7 @@ public class AiAgent : MonoBehaviour
         ui = GetComponentInChildren<UIHealthBar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         weapons = GetComponent<AiWeapons>();
+        swords = GetComponent<AiWeapons>();
         sensor = GetComponent<AiSensor>();
         targeting = GetComponent<AiTargetingSystem>();
         health = GetComponent<AiHealth>();

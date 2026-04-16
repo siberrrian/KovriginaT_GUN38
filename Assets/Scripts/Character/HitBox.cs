@@ -9,4 +9,9 @@ public class HitBox : MonoBehaviour
     public void OnRaycastHit(RaycastWeapon weapon, Vector3 direction) {
         health.TakeDamage(weapon.damage, direction);
     }
+
+    public void OnRaycastHit(RaycastSword weapon, Vector3 direction)
+    {
+        health.TakeDamage(weapon.damage, direction);
+    }
 }

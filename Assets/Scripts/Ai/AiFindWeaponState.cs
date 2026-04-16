@@ -37,9 +37,14 @@ public class AiFindWeaponState : AiState
         if (agent.weapons.Count() == 1) {
             agent.stateMachine.ChangeState(AiStateId.FindTarget);
         }
+        if (agent.swords.Count() == 1)
+        {
+            agent.stateMachine.ChangeState(AiStateId.FindTarget);
+        }
     }
 
     public void Exit(AiAgent agent) {
+
     }
 
     GameObject FindPickup(AiAgent agent) {

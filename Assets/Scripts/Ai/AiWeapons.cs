@@ -22,13 +22,20 @@ public class AiWeapons : MonoBehaviour
             return weapons[current];
         }
     }
-
+    public RaycastSword currentSword
+    {
+        get
+        {
+            return swords[0];
+        }
+    }
     public WeaponSlot currentWeaponSlot {
         get {
             return (WeaponSlot)current;
         }
     }
     RaycastWeapon[] weapons = new RaycastWeapon[2];
+    RaycastSword[] swords = new RaycastSword[1];
     int current = 0;
     Animator animator;
     MeshSockets sockets;
@@ -57,19 +64,48 @@ public class AiWeapons : MonoBehaviour
         weaponIk = GetComponent<WeaponIk>();
     }
 
-    private void Update() {
-        if (currentTarget && currentWeapon && IsActive()) {
+    private void Update()
+    {
+        var weapon = currentWeapon;
+        var sword = currentSword;
+
+        if (currentTarget && IsActive())
+        {
             Vector3 target = currentTarget.position + weaponIk.targetOffset;
             target += Random.insideUnitSphere * inaccuracy;
-            currentWeapon.UpdateWeapon(Time.deltaTime, target);
+
+            if (sword)
+            {
+                sword.UpdateWeapon(Time.deltaTime, target);
+            }
+            else if (weapon)
+            {
+                weapon.UpdateWeapon(Time.deltaTime, target);
+            }
         }
     }
 
     public void SetFiring(bool enabled) {
-        if (enabled) {
-            currentWeapon.StartFiring();
-        } else {
-            currentWeapon.StopFiring();
+        if (currentWeapon)
+        {
+            if (enabled)
+            {
+                currentWeapon.StartFiring();
+            }
+            else
+            {
+                currentWeapon.StopFiring();
+            }
+        } else if (currentSword)
+        {
+            if (enabled)
+            {
+                currentSword.StartFiring();
+            }
+            else
+            {
+                currentSword.StopFiring();
+            }
         }
     }
 
@@ -95,6 +131,24 @@ public class AiWeapons : MonoBehaviour
         current = (int)weapon.weaponSlot;
         weapons[current] = weapon;
         sockets.Attach(weapon.transform, weapon.holsterSocket);
+    }
+
+    public void Equip(RaycastSword sword)
+    {
+
+        current = (int)sword.weaponSlot;
+        swords[0] = sword;
+        sockets.Attach(sword.transform, sword.holsterSocket);
+        /*
+        current = (int)sword.weaponSlot;
+        swords[current] = sword;
+        sockets.Attach(sword.transform, sword.holsterSocket);
+
+        if (weaponIk)
+        {
+            weaponIk.SetAimTransform(sword.raycastOrigin);
+            weaponIk.weight = 1.0f; 
+        }*/
     }
 
     public void ActivateWeapon() {
@@ -137,20 +191,38 @@ public class AiWeapons : MonoBehaviour
                 count++;
             }
         }
+        foreach (var sword in swords)
+        {
+            if (sword != null)
+            {
+                count++;
+            }
+        }
         return count;
     }
 
-    IEnumerator EquipWeaponAnimation() {
+    IEnumerator EquipWeaponAnimation()
+    {
         weaponState = WeaponState.Activating;
-        animator.runtimeAnimatorController = currentWeapon.animator;
+
+        var weapon = currentWeapon;
+        var sword = currentSword;
+
+        animator.runtimeAnimatorController = weapon ? weapon.animator : sword.animator;
+
         animator.SetBool("equip", true);
         yield return new WaitForSeconds(0.5f);
-        while(animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f) {
+
+        while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
+        {
             yield return null;
         }
 
         weaponIk.enabled = true;
-        weaponIk.SetAimTransform(currentWeapon.raycastOrigin);
+
+        Transform aimPoint = weapon ? weapon.raycastOrigin : sword.raycastOrigin;
+        weaponIk.SetAimTransform(aimPoint);
+
         weaponState = WeaponState.Active;
     }
 
@@ -208,9 +280,17 @@ public class AiWeapons : MonoBehaviour
     void AttachWeapon() {
         bool equipping = animator.GetBool("equip");
         if (equipping) {
-            sockets.Attach(currentWeapon.transform, MeshSockets.SocketId.RightHand);
+            if (currentWeapon)
+                sockets.Attach(currentWeapon.transform, MeshSockets.SocketId.RightHand);
+            else if (currentSword)
+                sockets.Attach(currentSword.transform, MeshSockets.SocketId.RightHand);
         } else {
-            sockets.Attach(currentWeapon.transform, currentWeapon.holsterSocket);
+
+            if (currentWeapon) 
+                sockets.Attach(currentWeapon.transform, currentWeapon.holsterSocket);
+            else if (currentSword) 
+                sockets.Attach(currentSword.transform, currentSword.holsterSocket);
+
         }
     }
 
