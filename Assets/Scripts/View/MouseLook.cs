@@ -13,7 +13,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        this.transform.position = playerBody.transform.position;
+        this.transform.position = new Vector3(playerBody.transform.position.x, playerBody.transform.position.y + 0.7f, playerBody.transform.position.z);
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
