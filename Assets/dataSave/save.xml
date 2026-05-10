@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<SavedData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Player</Name>
+  <Position>
+    <X>78.64414</X>
+    <Y>0.5484925</Y>
+    <Z>66.75314</Z>
+  </Position>
+  <IsEnabled>true</IsEnabled>
+  <Health>160</Health>
+</SavedData>

@@ -11,7 +11,6 @@ namespace System.Model
     public sealed class PlayerBall : PlayerBase
     {
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private int _health = 100;
         [SerializeField] private Camera _camera;
         [SerializeField] private TextMeshProUGUI _textHealth;
 
@@ -46,7 +45,19 @@ namespace System.Model
         public void ChangeHealth(int bonus = 15)
         {
             _health += bonus;
-            _textHealth.text = _health.ToString();
+            UpdateHealthUI();
+        }
+
+        public void SetHealth(int value)
+        {
+            _health = value;
+            UpdateHealthUI();
+        }
+
+        private void UpdateHealthUI()
+        {
+            if (_textHealth != null)
+                _textHealth.text = _health.ToString();
         }
         public void ChangeSpeed(int bonus = 2)
         {

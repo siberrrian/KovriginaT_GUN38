@@ -1,27 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using Zenject;
 
 namespace SaveData
 {
-    [SerializeField]
+    [Serializable]
     public sealed class SavedData
     {
         public string Name;
         public Vector3Serializable Position;
         public bool IsEnabled;
+        public int Health;
 
         public override string ToString() => $"Name {Name} Position {Position} IsVisible {IsEnabled}";
     }
-    
+
+    [Serializable]
     public struct Vector3Serializable
     {
         public float X;
         public float Y;
         public float Z;
 
-        private Vector3Serializable(float valueX, float valueY, float valueZ)
+        // 2. XML-сериализатору НУЖЕН пустой конструктор
+        public Vector3Serializable(float valueX, float valueY, float valueZ)
         {
             X = valueX;
             Y = valueY;
@@ -41,5 +42,3 @@ namespace SaveData
         public override string ToString() => $" (X = {X} Y = {Y} Z = {Z})";
     }
 }
-
-

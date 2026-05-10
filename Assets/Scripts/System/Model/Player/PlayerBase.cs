@@ -9,7 +9,10 @@ namespace System.Model
     {
 
         public float Speed = 3.0f;
+        public int _health = 100;
         protected abstract void Move(Vector3 direction);
+
+        
     }
 
     

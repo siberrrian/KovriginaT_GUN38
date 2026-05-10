@@ -13,7 +13,9 @@ namespace DefaultNamespace
 {
     public sealed class DemoInstaller : MonoInstaller
     {
-        [SerializeField] private Radar _radar;
+        [SerializeField] private Radar _radar; 
+        [SerializeField] private Transform _playerTransform;
+
 
 
         public override void InstallBindings()
@@ -28,6 +30,8 @@ namespace DefaultNamespace
         {
             Container.BindInterfacesAndSelfTo<InputModel>().AsSingle();
             Container.Bind<PlayerBall>().AsSingle();
+            Container.Bind<Transform>().WithId("Player").FromInstance(_playerTransform);
+
 
         }
 
@@ -45,7 +49,8 @@ namespace DefaultNamespace
         }
         private void BindServices()
         {
-            Container.Bind<IData<SavedData>>().To<BinarySerializationData<SavedData>>().AsSingle().Lazy();
+            // Заменяем Binary на Xml
+            Container.Bind<IData<SavedData>>().To<XmlSerializationData<SavedData>>().AsSingle();
             Container.BindInterfacesAndSelfTo<SaveDataService>().AsSingle();
         }
     }

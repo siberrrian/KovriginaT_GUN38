@@ -13,48 +13,53 @@ namespace System.Presenter
     public class InputPresenter : IInitializable, IDisposable
     {
         private CompositeDisposable _inputDisposable = new();
-        private CompositeDisposable _gameOverInputDisposable = new();
 
-        private readonly KeyCode _savePlayer = KeyCode.C;
-        private readonly KeyCode _loadPlayer = KeyCode.V;
-        private IVectorSet _vectorSet;
-        private ISaveLoadInputValues _saveLoadInputValues;
-        private readonly ISaveDataService<PlayerBase> _saveService;
+        private readonly IVectorSet _vectorSet;
+        private readonly ISaveLoadInputValues _saveLoadInputValues;
+
         [Inject]
-        private InputPresenter(IVectorSet vectorSet, ISaveLoadInputValues saveLoadInputValues, ISaveDataService<PlayerBase> saveService)
+        public InputPresenter(IVectorSet vectorSet, ISaveLoadInputValues saveLoadInputValues)
         {
             _vectorSet = vectorSet;
-            _saveLoadInputValues = _saveLoadInputValues;
-            _saveService = saveService;
+            _saveLoadInputValues = saveLoadInputValues;
         }
+
         public void Initialize()
         {
-            _inputDisposable.Add(Observable
-                .EveryUpdate()
-                .Where(t => Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-                .Subscribe(OnNext));
+            Observable.EveryUpdate()
+                .Subscribe(_ => {
+                    float h = Input.GetAxis("Horizontal");
+                    float v = Input.GetAxis("Vertical");
+                    if (h != 0 || v != 0) _vectorSet.SetVector(new Vector3(h, 0, v));
+                })
+                .AddTo(_inputDisposable);
 
-            Observable.EveryUpdate().Subscribe(SaveData).AddTo(_inputDisposable);
-            Observable.EveryUpdate().Subscribe(LoadData).AddTo(_inputDisposable);
+            Observable.EveryUpdate()
+                .Subscribe(_ => {
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        _saveLoadInputValues.SaveClicked.Value = true;
+                        Debug.Log("Сохранение");
+                    }
+                    else
+                    {
+                        _saveLoadInputValues.SaveClicked.Value = false;
+                    }
 
+                    if (Input.GetKeyDown(KeyCode.V))
+                    {
+                        _saveLoadInputValues.LoadClicked.Value = true;
+                        Debug.Log("Загрузка");
+                    }
+                    else
+                    {
+                        _saveLoadInputValues.LoadClicked.Value = false;
+                    }
+                })
+                .AddTo(_inputDisposable);
         }
-        private void SaveData(long _)
-        {
-            _saveLoadInputValues.SaveClicked.Value = Input.GetKeyDown(KeyCode.C);
-            Debug.Log("Save");
-        }
-        private void LoadData(long _) => _saveLoadInputValues.SaveClicked.Value = Input.GetKeyDown(KeyCode.V);
-
-        private void OnNext(long obj) => _vectorSet.SetVector(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
-
-        /*{
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-            {
-                _vectorSet.SetVector(new Vector3(x: Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
-            }
-        }*/
 
         public void Dispose() => _inputDisposable.Dispose();
-
     }
+
 }

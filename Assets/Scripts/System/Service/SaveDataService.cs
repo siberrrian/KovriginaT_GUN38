@@ -12,7 +12,7 @@ namespace SaveData
         private readonly IData<SavedData> _data;
 
         private const string _folderName = "dataSave";
-        private const string _fileName = "data.bat";
+        private const string _fileName = "save.xml";
         private readonly string _path;
 
 
@@ -24,27 +24,37 @@ namespace SaveData
 
         public void Save(PlayerBase player)
         {
-            if (!Directory.Exists(Path.Combine(_path)))
-            {
-                Directory.CreateDirectory(_path);
-            }
+            if (!Directory.Exists(_path)) Directory.CreateDirectory(_path);
+
             var savePlayer = new SavedData
             {
                 Position = player.transform.position,
-                Name = "Name",
-                IsEnabled = true
+                Name = player.name,
+                IsEnabled = true,
+                Health = player._health
             };
-
             _data.OnSave(savePlayer, Path.Combine(_path, _fileName));
-
-
         }
+
         public void Load(PlayerBase player)
         {
             var file = Path.Combine(_path, _fileName);
             if (!File.Exists(file)) return;
-            var newPlayer = _data.OnLoad(file);
+
+            var loadedData = _data.OnLoad(file);
+            if (loadedData != null)
+            {
+                player.transform.position = loadedData.Position;
+
+                var playerBall = player.GetComponent<PlayerBall>();
+                if (playerBall != null)
+                {
+                    playerBall.SetHealth((int)loadedData.Health);
+                }
+            }
         }
+
+
 
     }
 
