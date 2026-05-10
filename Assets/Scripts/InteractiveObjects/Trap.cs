@@ -25,7 +25,7 @@ namespace InteractiveObjects
         {
             if (otherGameObject.TryGetComponent<System.Model.PlayerBall>(out PlayerBall player))
             {
-                player.ChangeHealth(-20);
+                player.ChangeHealth(-40);
             }
         }
 
