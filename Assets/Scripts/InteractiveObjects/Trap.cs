@@ -10,13 +10,15 @@ namespace InteractiveObjects
     {
         private Material _material;
         private float _lengthFlay;
+        private float y;
 
 
         private void Awake()
         {
-            _material = GetComponent<Renderer>().material;
-            _material.color = Color.red;
-            _lengthFlay = 5.0f;
+            y = transform.localPosition.y;
+            //_material = GetComponent<Renderer>().material;
+            //_material.color = Color.red;
+            _lengthFlay = 4.5f;
         }
 
         protected override void Interaction(GameObject otherGameObject)
@@ -36,7 +38,7 @@ namespace InteractiveObjects
         public void Flay()
         {
             transform.localPosition = new Vector3(transform.localPosition.x,
-                Mathf.PingPong(Time.time, _lengthFlay), transform.localPosition.z);
+                Mathf.PingPong(Time.time, _lengthFlay) + y, transform.localPosition.z);
         }
     }
 }
