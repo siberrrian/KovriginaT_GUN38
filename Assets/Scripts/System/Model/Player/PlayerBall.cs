@@ -48,6 +48,10 @@ namespace System.Model
             _health += bonus;
             _textHealth.text = _health.ToString();
         }
+        public void ChangeSpeed(int bonus = 2)
+        {
+            Speed += bonus;
+        }
     }
 }
 
