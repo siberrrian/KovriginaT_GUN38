@@ -2,10 +2,10 @@
 <SavedData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Player</Name>
   <Position>
-    <X>84.39681</X>
-    <Y>0.6384927</Y>
-    <Z>46.2068672</Z>
+    <X>77.57186</X>
+    <Y>0.6953577</Y>
+    <Z>43.28635</Z>
   </Position>
   <IsEnabled>true</IsEnabled>
-  <Health>145</Health>
+  <Health>115</Health>
 </SavedData>
