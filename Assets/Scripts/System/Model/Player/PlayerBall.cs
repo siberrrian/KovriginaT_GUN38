@@ -13,6 +13,7 @@ namespace System.Model
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private Camera _camera;
         [SerializeField] private TextMeshProUGUI _textHealth;
+        [SerializeField] private TextMeshProUGUI _textGameOver;
 
         [Inject] private IAxisInput _input;
         private IDisposable _disposable;
@@ -58,10 +59,18 @@ namespace System.Model
         {
             if (_textHealth != null)
                 _textHealth.text = _health.ToString();
+
+            if (_health <= 0)
+                GameOver();
         }
         public void ChangeSpeed(int bonus = 2)
         {
             Speed += bonus;
+        }
+
+        private void GameOver()
+        {
+            _textGameOver.text = "GAME OVER";
         }
     }
 }
