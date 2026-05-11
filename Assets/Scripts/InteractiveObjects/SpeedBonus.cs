@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Model;
+using TMPro;
 using UnityEngine;
 
 
@@ -12,6 +13,8 @@ namespace InteractiveObjects
         private float _lengthFlay;
         private float _speed = 50;
         private float y;
+        [SerializeField] private TextMeshProUGUI _textSpeed;
+        //+3 Speed!
 
 
         private void Awake()
@@ -25,6 +28,7 @@ namespace InteractiveObjects
             if (otherGameObject.TryGetComponent<System.Model.PlayerBall>(out PlayerBall player))
             {
                 player.ChangeSpeed(3);
+                _textSpeed.text = "+3 Speed!";
             }
             GetComponent<Light>().enabled = false;
         }
