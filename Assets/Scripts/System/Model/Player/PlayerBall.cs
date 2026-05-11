@@ -15,6 +15,8 @@ namespace System.Model
         [SerializeField] private TextMeshProUGUI _textHealth;
         [SerializeField] private TextMeshProUGUI _textGameOver;
 
+        [SerializeField] private BonusCounter _counter;
+
         [Inject] private IAxisInput _input;
         private IDisposable _disposable;
         /*
@@ -47,6 +49,11 @@ namespace System.Model
         {
             _health += bonus;
             UpdateHealthUI();
+            if (bonus > 0)
+            {
+                _counter.ChangeCount();
+            }
+            
         }
 
         public void SetHealth(int value)
@@ -66,6 +73,7 @@ namespace System.Model
         public void ChangeSpeed(int bonus = 2)
         {
             Speed += bonus;
+            _counter.ChangeCount();
         }
 
         private void GameOver()
