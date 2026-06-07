@@ -103,6 +103,8 @@ namespace Presenters
         {
             _playerModel.DisablePlayer();
             _stickModel.DisableStick();
+
+            _gameScoreModel.ApplyFallPenalty();
         }
 
         private void OnMoveSuccessfull(MoveSuccessfulMessage message) => SetNextGameIteration();

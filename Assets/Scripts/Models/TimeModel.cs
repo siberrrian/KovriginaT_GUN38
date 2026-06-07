@@ -3,6 +3,7 @@ using Core.Utils;
 using Cysharp.Threading.Tasks;
 using Models.Interfaces;
 using UniRx;
+using System.Threading;
 
 namespace Models
 {
@@ -11,15 +12,33 @@ namespace Models
         private readonly ReactiveProperty<int> _gameTime = new();
         public IObservable<int> GameTime =>  _gameTime;
 
-        public void Initialize() => CountTime().Forget();
+        private CancellationTokenSource _cts = new();
 
-        private async UniTask CountTime()
+        public void Initialize() => CountTime(_cts.Token).Forget();
+
+        
+
+        private async UniTask CountTime(CancellationToken cancellationToken)
         {
-            while (true)
+            try
             {
-                await UniTask.Delay(NumericConstants.One * 1000);
-                _gameTime.Value++;
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    await UniTask.Delay(NumericConstants.One * 1000, cancellationToken: cancellationToken);
+                    _gameTime.Value++;
+                }
             }
+            catch (OperationCanceledException)
+            {
+
+            }
+        }
+        
+        public void Dispose()
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _gameTime.Dispose();
         }
     }
 }

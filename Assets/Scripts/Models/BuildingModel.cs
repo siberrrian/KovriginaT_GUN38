@@ -14,21 +14,27 @@ namespace Models
         private const float StickShift = 0.1f;
         private readonly IPool<GameObject> _pool;
         private readonly GameObject _building;
+
+        
+        private readonly IBonusModel _bonusModel;
+
         private GameObject _buildingWithPlayer;
         private GameObject _buildingToFollow;
 
-        private Vector2 PlayerBuildingPosition 
-            => new(_buildingWithPlayer.transform.position.x, 
-                _buildingWithPlayer.transform.position.y + _buildingWithPlayer.transform.localScale.y * NumericConstants.Half  + NumericConstants.One);
-        
-        private Vector2 FollowBuildingPosition 
-            => new(_buildingToFollow.transform.position.x, 
-                _buildingToFollow.transform.position.y + _buildingToFollow.transform.localScale.y * NumericConstants.Half  + 1);
+        private Vector2 PlayerBuildingPosition
+            => new(_buildingWithPlayer.transform.position.x,
+                _buildingWithPlayer.transform.position.y + _buildingWithPlayer.transform.localScale.y * NumericConstants.Half + NumericConstants.One);
 
-        public BuildingModel(IPool<GameObject> pool, [Inject(Id = "Building")] GameObject building)
+        private Vector2 FollowBuildingPosition
+            => new(_buildingToFollow.transform.position.x,
+                _buildingToFollow.transform.position.y + _buildingToFollow.transform.localScale.y * NumericConstants.Half + 1);
+
+        
+        public BuildingModel(IPool<GameObject> pool, [Inject(Id = "Building")] GameObject building, IBonusModel bonusModel)
         {
             _pool = pool;
             _building = building;
+            _bonusModel = bonusModel;
         }
 
         public void Initialize() => _pool.InitializePool(_building, Constants.DefaultPoolCount);
@@ -42,15 +48,18 @@ namespace Models
                 _buildingWithPlayer = _pool.GetNextObject();
                 _buildingWithPlayer.transform.position = position;
                 _buildingWithPlayer.transform.localScale = CalculateNewScale();
+
+                _bonusModel.TrackPlatformPosition(_buildingWithPlayer.transform.position.x);
                 return;
             }
-            
+
             if (_buildingToFollow == null)
             {
                 _buildingToFollow = _pool.GetNextObject();
                 _buildingToFollow.transform.position = position;
                 _buildingToFollow.transform.localScale = CalculateNewScale();
-                
+
+                _bonusModel.TrackPlatformPosition(_buildingToFollow.transform.position.x);
                 return;
             }
             _pool.ReturnObject(_buildingWithPlayer);
@@ -58,12 +67,14 @@ namespace Models
             _buildingToFollow = _pool.GetNextObject();
             _buildingToFollow.transform.position = position;
             _buildingToFollow.transform.localScale = CalculateNewScale();
+
+            _bonusModel.TrackPlatformPosition(_buildingToFollow.transform.position.x);
         }
 
         private Vector3 CalculateNewScale() => new(Random.Range(MinWidth, MaxWidth), BuildingHeight, NumericConstants.One);
 
-        public (float min, float max) GetNextBuildingPositionRange() 
-            => (_buildingToFollow.transform.position.x - _buildingToFollow.transform.localScale.x * NumericConstants.Half, 
+        public (float min, float max) GetNextBuildingPositionRange()
+            => (_buildingToFollow.transform.position.x - _buildingToFollow.transform.localScale.x * NumericConstants.Half,
                 _buildingToFollow.transform.position.x + _buildingToFollow.transform.localScale.x * NumericConstants.Half);
 
         public Vector2 CalculateStartPositionForStick() =>
