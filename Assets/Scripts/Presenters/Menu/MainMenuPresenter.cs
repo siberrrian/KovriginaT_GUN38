@@ -15,26 +15,31 @@ namespace Presenters.Menu
         [SerializeField] private Button _startButton;
 
         [Header("Лучшие бонусы в Главном Меню")]
-        [SerializeField] private TMP_Text _bestCirclesText;
-        [SerializeField] private TMP_Text _bestTrianglesText;
+        [SerializeField] private TMP_Text _lastCirclesText;
+        [SerializeField] private TMP_Text _lastTrianglesText;
 
         private IGameScoreModel _gameScoreModel;
+        private IBonusModel _bonusModel;
 
         [Inject]
-        private void Inject(IGameScoreModel gameScoreModel) => _gameScoreModel = gameScoreModel;
-
+        private void Inject(IGameScoreModel gameScoreModel, IBonusModel bonusModel)
+        {
+            _gameScoreModel = gameScoreModel;
+            _bonusModel = bonusModel;
+        }
         private void Start()
         {
+
             _scoreText.text = _gameScoreModel.BestScore.Value.ToString();
 
-            if (_bestCirclesText != null)
+            if (_lastCirclesText != null)
             {
-                _bestCirclesText.text = _gameScoreModel.BestCircles.Value.ToString();
+                _lastCirclesText.text = _bonusModel.LastCircles.Value.ToString();
             }
 
-            if (_bestTrianglesText != null)
+            if (_lastTrianglesText != null)
             {
-                _bestTrianglesText.text = _gameScoreModel.BestTriangles.Value.ToString();
+                _lastTrianglesText.text = _bonusModel.LastTriangles.Value.ToString();
             }
 
             _startButton.OnClickAsObservable().Subscribe(OnStartButtonClicked).AddTo(this);

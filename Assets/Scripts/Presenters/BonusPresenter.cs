@@ -45,11 +45,9 @@ namespace Presenters
         }
 
 
-        private Bonuses _lastSpawnedType;
 
         private void SpawnBonus(Bonuses type, float xPosition)
         {
-            _lastSpawnedType = type;
 
             Vector3 position = new Vector3(xPosition, SpawnHeightY, 0f);
             GameObject bonusGo = _container.InstantiatePrefab(_bonusPrefab, position, Quaternion.identity, null);
@@ -57,23 +55,16 @@ namespace Presenters
             SpriteRenderer spriteRenderer = bonusGo.GetComponent<SpriteRenderer>();
             if (type == Bonuses.Circle)
             {
-                spriteRenderer.sprite = _starSprite;
+                spriteRenderer.sprite = _hearthSprite;
             }
             else
             {
-                spriteRenderer.sprite = _hearthSprite;
+                spriteRenderer.sprite = _starSprite;
             }
 
             bonusGo.GetOrAddComponent<BonusTrigger>().OnPlayerEntered = () =>
             {
-                if (type == Bonuses.Circle)
-                {
-                    _gameScoreModel.IncreaseCircles();
-                }
-                else
-                {
-                    _gameScoreModel.IncreaseTriangles();
-                }
+                _bonusModel.CollectBonus(type);
 
                 UnityEngine.Object.Destroy(bonusGo);
             };

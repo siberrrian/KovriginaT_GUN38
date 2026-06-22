@@ -21,6 +21,7 @@ namespace Presenters
         private readonly IGameScoreModel _gameScoreModel;
         private readonly IMessageBroker _messageBroker;
         private readonly Vector2 _startPosition;
+        private readonly IBonusModel _bonusModel;
         private Vector2 _currentStickPosition;
         private int _gameIterations;
         private Camera _camera;
@@ -31,12 +32,14 @@ namespace Presenters
             IStickModel stickModel,
             IGameScoreModel gameScoreModel,
             IMessageBroker broker,
+            IBonusModel bonusModel,
             [Inject(Id = "Start")] Transform startPosition)
         {
             _buildingModel = buildingModel;
             _playerModel = playerModel;
             _stickModel = stickModel;
             _gameScoreModel = gameScoreModel;
+            _bonusModel = bonusModel;
             _messageBroker = broker;
             _startPosition = startPosition.position;
         }
@@ -46,6 +49,7 @@ namespace Presenters
             Subscribe();
             InitializeObjectsAtStart();
             _gameScoreModel.ResetScore();
+            _bonusModel.ClearCurrentSession();
         }
 
         public void Dispose() => Unsubscribe();
@@ -104,29 +108,43 @@ namespace Presenters
             _playerModel.DisablePlayer();
             _stickModel.DisableStick();
 
-            _gameScoreModel.ApplyFallPenalty();
+            _bonusModel.SaveCurrentSessionAsLast();
         }
 
         private void OnMoveSuccessfull(MoveSuccessfulMessage message) => SetNextGameIteration();
 
         private void SetNextGameIteration()
         {
-            _gameIterations+= Constants.BuildingPositionDelta;
+            _gameIterations += Constants.BuildingPositionDelta;
             _gameScoreModel.IncreaseScore();
             _buildingModel.SetNextBuildingPosition(
                 new Vector2(_startPosition.x + Constants.BuildingPositionDelta * _gameIterations, _startPosition.y));
             _stickModel.DisableStick();
             SetStickPosition();
 
-            _camera.transform
-                .DOMove(CalculateNewCameraPosition(), NumericConstants.Half)
-                .OnComplete(() => _messageBroker.Publish(new SetInputActiveStateMessage { IsActive = true }))
-                .Play();
-            
+            if (_camera != null)
+            {
+                _camera.transform
+                    .DOMove(CalculateNewCameraPosition(), NumericConstants.Half)
+                    .OnComplete(() =>
+                    {
+                        _messageBroker.Publish(new SetInputActiveStateMessage { IsActive = true });
+
+                        _buildingModel.SpawnBonus();
+                    })
+                    .Play();
+            }
+            else
+            {
+                _messageBroker.Publish(new SetInputActiveStateMessage { IsActive = true });
+                _buildingModel.SpawnBonus();
+            }
+
             Vector3 CalculateNewCameraPosition() =>
                 new(_startPosition.x + Constants.BuildingPositionDelta * _gameIterations - Constants.BuildingPositionDelta,
-                    _camera.transform.position.y,
-                    _camera.transform.position.z);
+                    _camera != null ? _camera.transform.position.y : 0f,
+                    _camera != null ? _camera.transform.position.z : -10f);
         }
+
     }
 }

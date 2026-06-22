@@ -20,11 +20,6 @@ namespace Models.Interfaces
         /// </summary>
         ReactiveProperty<int> BestScore { get; }
 
-        /*
-        ReactiveProperty<int> BestCircles { get; }
-
-        ReactiveProperty<int> BestTriangles { get; }*/
-
         /// <summary>
         /// Increase score
         /// </summary>
@@ -34,15 +29,5 @@ namespace Models.Interfaces
         /// Set score value to default
         /// </summary>
         void ResetScore();
-
-        ReactiveProperty<int> CurrentCircles { get; }
-        ReactiveProperty<int> BestCircles { get; }
-
-        ReactiveProperty<int> CurrentTriangles { get; }
-        ReactiveProperty<int> BestTriangles { get; }
-
-        void IncreaseCircles();
-        void IncreaseTriangles();
-        void ApplyFallPenalty();
     }
 }

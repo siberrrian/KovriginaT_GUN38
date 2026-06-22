@@ -43,7 +43,6 @@ namespace Installers
             Container.BindInterfacesAndSelfTo<PlayerModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<StickModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<TimeModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BonusModel>().AsSingle();
         }
 
 
