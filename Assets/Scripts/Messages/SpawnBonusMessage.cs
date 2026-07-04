@@ -1,12 +1,13 @@
-﻿namespace Messages
+namespace Messages
 {
-    public struct MoveSuccessfulMessage
+    public struct SpawnBonusMessage
     {
         public float PlatformXPosition { get; }
 
-        public MoveSuccessfulMessage(float platformXPosition)
+        public SpawnBonusMessage(float platformXPosition)
         {
             PlatformXPosition = platformXPosition;
         }
     }
 }
+

@@ -11,7 +11,6 @@ namespace Presenters
 {
     public sealed class BonusPresenter : Zenject.IInitializable, IDisposable
     {
-        private readonly IGameScoreModel _gameScoreModel;
         private readonly IBonusModel _bonusModel;
         private readonly DiContainer _container;
         private readonly GameObject _bonusPrefab;
@@ -22,14 +21,12 @@ namespace Presenters
         private const float SpawnHeightY = 0.2f;
 
         public BonusPresenter(
-            IGameScoreModel gameScoreModel,
             IBonusModel bonusModel,
             DiContainer container,
             [Inject(Id = "BonusPrefab")] GameObject bonusPrefab,
             [Inject(Id = "StarSprite")] Sprite starSprite,
             [Inject(Id = "HearthSprite")] Sprite hearthSprite)
         {
-            _gameScoreModel = gameScoreModel;
             _bonusModel = bonusModel;
             _container = container;
             _bonusPrefab = bonusPrefab;

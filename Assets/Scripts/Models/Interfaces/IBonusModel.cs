@@ -14,7 +14,6 @@ public interface IBonusModel : IInitializable
 {
 
     IReadOnlyReactiveDictionary<Bonuses, int> CurrentSessionBonuses { get; }
-    IReadOnlyReactiveCollection<Bonuses> CollectedBonuses { get; }
     IObservable<(Bonuses type, float spawnX)> OnBonusSpawned { get; }
     void TrackPlatformPosition(float nextPlatformX);
     

@@ -1,8 +1,12 @@
-﻿namespace Core.SaveLoad
+﻿using Core.SaveLoad;
+
+namespace Core.SaveLoad
 {
     /// <summary>
     /// Implement this for custom save/load of standard types
     /// </summary>
+    /// 
+
     public interface ISaveLoadDataHandler
     {
         void SaveString(string key, string value);

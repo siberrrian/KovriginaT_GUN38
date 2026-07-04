@@ -10,7 +10,6 @@ namespace Models
     public sealed class BonusModel : IBonusModel, IDisposable, IInitializable
     {
         private readonly ReactiveCollection<Bonuses> _collectedBonuses = new();
-        public IReadOnlyReactiveCollection<Bonuses> CollectedBonuses => _collectedBonuses;
 
         private readonly ReactiveDictionary<Bonuses, int> _currentSessionBonuses = new();
         public IReadOnlyReactiveDictionary<Bonuses, int> CurrentSessionBonuses => _currentSessionBonuses;
@@ -23,6 +22,8 @@ namespace Models
         private ReactiveProperty<int> _currentCircles;
 
         private ReactiveProperty<int> _currentTriangles;
+
+        private Bonuses _lastType;
 
         public ReactiveProperty<int> CurrentCircles => _currentCircles;
 
@@ -97,9 +98,11 @@ namespace Models
             if (bonus == Bonuses.Triangle)
             {
                 _currentTriangles.Value++;
+                _lastType = Bonuses.Triangle;
             } else
             {
                 _currentCircles.Value++;
+                _lastType = Bonuses.Circle;
             }
 
             _collectedBonuses.Add(bonus);
@@ -116,6 +119,17 @@ namespace Models
 
         public void SaveCurrentSessionAsLast()
         {
+            if (_lastType != null)
+            {
+                if (_lastType == Bonuses.Triangle)
+                {
+                    _currentSessionBonuses[Bonuses.Triangle]--;
+                }
+                else
+                {
+                    _currentSessionBonuses[Bonuses.Circle]--;
+                }
+            }
 
             _saveLoadDataHandler.SaveInt("LastCircles", _currentSessionBonuses[Bonuses.Circle]);
             _saveLoadDataHandler.SaveInt("LastTriangles", _currentSessionBonuses[Bonuses.Triangle]);
@@ -134,19 +148,19 @@ namespace Models
 
         private void LoadLastSessionData()
         {
-            _lastSessionBonuses[Bonuses.Circle] = PlayerPrefs.GetInt("LastCircles", 0);
-            _lastSessionBonuses[Bonuses.Triangle] = PlayerPrefs.GetInt("LastTriangles", 0);
+            _lastSessionBonuses[Bonuses.Circle] = _saveLoadDataHandler.TryLoadInt("LastCircles", out var lastcrc) ? lastcrc : 0;
+            _lastSessionBonuses[Bonuses.Triangle] = _saveLoadDataHandler.TryLoadInt("LastTriangles", out var lasttr) ? lasttr : 0;
         }
 
 
         public int GetLastCircles()
         {
-            return PlayerPrefs.GetInt("LastCircles", 0);
+            return _saveLoadDataHandler.TryLoadInt("LastCircles", out var lastcrc) ? lastcrc : 0;
         }
 
         public int GetLastTriangles()
         {
-            return PlayerPrefs.GetInt("LastTriangles", 0);
+            return _saveLoadDataHandler.TryLoadInt("LastTriangles", out var lasttr) ? lasttr : 0;
         }
 
         public void Dispose()

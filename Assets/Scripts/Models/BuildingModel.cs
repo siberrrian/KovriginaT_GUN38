@@ -49,7 +49,6 @@ namespace Models
                 _buildingWithPlayer.transform.position = position;
                 _buildingWithPlayer.transform.localScale = CalculateNewScale();
 
-                //_bonusModel.TrackPlatformPosition(_buildingWithPlayer.transform.position.x);
                 return;
             }
 
@@ -59,7 +58,6 @@ namespace Models
                 _buildingToFollow.transform.position = position;
                 _buildingToFollow.transform.localScale = CalculateNewScale();
 
-                //_bonusModel.TrackPlatformPosition(_buildingToFollow.transform.position.x);
                 return;
             }
             _pool.ReturnObject(_buildingWithPlayer);
@@ -68,13 +66,12 @@ namespace Models
             _buildingToFollow.transform.position = position;
             _buildingToFollow.transform.localScale = CalculateNewScale();
 
-            //_bonusModel.TrackPlatformPosition(_buildingToFollow.transform.position.x);
         }
 
-        public void SpawnBonus()
+        /*public void SpawnBonus()
         {
             _bonusModel.TrackPlatformPosition(_buildingToFollow.transform.position.x);
-        }
+        }*/
 
         private Vector3 CalculateNewScale() => new(Random.Range(MinWidth, MaxWidth), BuildingHeight, NumericConstants.One);
 

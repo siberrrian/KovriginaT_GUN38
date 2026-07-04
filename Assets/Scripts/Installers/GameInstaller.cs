@@ -53,6 +53,7 @@ namespace Installers
             Container.BindInterfacesAndSelfTo<GameLoopPresenter>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<BonusPresenter>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BonusGeneratorPresenter>().AsSingle().NonLazy();
         }
     }
 }

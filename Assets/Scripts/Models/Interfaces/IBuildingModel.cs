@@ -14,7 +14,7 @@ namespace Models.Interfaces
         /// </summary>
         /// <param name="position"></param>
         void SetNextBuildingPosition(Vector2 position);
-        void SpawnBonus();
+        //void SpawnBonus();
 
         /// <summary>
         /// Get position on building where player stands

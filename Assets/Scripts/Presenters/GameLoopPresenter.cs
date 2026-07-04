@@ -27,8 +27,8 @@ namespace Presenters
         private Camera _camera;
 
         public GameLoopPresenter(
-            IBuildingModel buildingModel, 
-            IPlayerModel playerModel, 
+            IBuildingModel buildingModel,
+            IPlayerModel playerModel,
             IStickModel stickModel,
             IGameScoreModel gameScoreModel,
             IMessageBroker broker,
@@ -67,7 +67,7 @@ namespace Presenters
             _gameIterations = NumericConstants.One;
             _camera = Camera.main;
         }
-        
+
         private void SetStickPosition()
         {
             _currentStickPosition = _buildingModel.CalculateStartPositionForStick();
@@ -92,7 +92,7 @@ namespace Presenters
             else
             {
                 var playerPosition = _buildingModel.GetPositionForPlayer(true);
-                _playerModel.MovePlayer( playerPosition + Vector2.right * (_stickModel.GetStickLength() + (_currentStickPosition.x - playerPosition.x)), true, true);
+                _playerModel.MovePlayer(playerPosition + Vector2.right * (_stickModel.GetStickLength() + (_currentStickPosition.x - playerPosition.x)), true, true);
             }
         }
 
@@ -117,8 +117,11 @@ namespace Presenters
         {
             _gameIterations += Constants.BuildingPositionDelta;
             _gameScoreModel.IncreaseScore();
-            _buildingModel.SetNextBuildingPosition(
-                new Vector2(_startPosition.x + Constants.BuildingPositionDelta * _gameIterations, _startPosition.y));
+
+            // Считаем и сохраняем координату X нового здания
+            float nextBuildingX = _startPosition.x + Constants.BuildingPositionDelta * _gameIterations;
+
+            _buildingModel.SetNextBuildingPosition(new Vector2(nextBuildingX, _startPosition.y));
             _stickModel.DisableStick();
             SetStickPosition();
 
@@ -130,14 +133,15 @@ namespace Presenters
                     {
                         _messageBroker.Publish(new SetInputActiveStateMessage { IsActive = true });
 
-                        _buildingModel.SpawnBonus();
+                        // Отправляем новое сообщение с координатой X
+                        _messageBroker.Publish(new SpawnBonusMessage(nextBuildingX));
                     })
                     .Play();
             }
             else
             {
                 _messageBroker.Publish(new SetInputActiveStateMessage { IsActive = true });
-                _buildingModel.SpawnBonus();
+                _messageBroker.Publish(new SpawnBonusMessage(nextBuildingX));
             }
 
             Vector3 CalculateNewCameraPosition() =>
@@ -145,6 +149,5 @@ namespace Presenters
                     _camera != null ? _camera.transform.position.y : 0f,
                     _camera != null ? _camera.transform.position.z : -10f);
         }
-
     }
 }
